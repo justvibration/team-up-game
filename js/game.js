@@ -14,7 +14,7 @@ function preload() {
 
   game.load.image('bg', 'assets/bg.jpg');
   game.load.image('ground', 'assets/platform.png');
-  game.load.image('star', 'assets/star.png');
+  game.load.image('backlogItem', 'assets/star.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 
 }
@@ -23,7 +23,7 @@ var player;
 var platforms;
 var cursors;
 
-var stars;
+var backlogItems;
 var score = 0;
 var scoreText;
 
@@ -51,10 +51,12 @@ function create() {
   ground.body.immovable = true;
 
   //  Now let's create two ledges
-  var ledge = platforms.create(400, 400, 'ground');
+  var ledge = platforms.create(600, 650, 'ground');
   ledge.body.immovable = true;
+  ledge.scale.setTo(1, 0.5);
 
-  ledge = platforms.create(-150, 250, 'ground');
+  ledge = platforms.create(150, 550, 'ground');
+  ledge.scale.setTo(1, 0.5);
   ledge.body.immovable = true;
 
   // The player and its settings
@@ -72,22 +74,22 @@ function create() {
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  //  Finally some stars to collect
-  stars = game.add.group();
+  //  Finally some backlogs to collect
+  backlogItems = game.add.group();
 
-  //  We will enable physics for any star that is created in this group
-  stars.enableBody = true;
+  //  We will enable physics for any backlogItem that is created in this group
+  backlogItems.enableBody = true;
 
   //  Here we'll create 12 of them evenly spaced apart
   for (var i = 0; i < 12; i++) {
-    //  Create a star inside of the 'stars' group
-    var star = stars.create(i * 70, 0, 'star');
+    //  Create a backlogItem inside of the 'backlogItems' group
+    var backlogItem = backlogItems.create(i * 70, 0, 'backlogItem');
 
     //  Let gravity do its thing
-    star.body.gravity.y = 300;
+    backlogItem.body.gravity.y = 300;
 
-    //  This just gives each star a slightly random bounce value
-    star.body.bounce.y = 0.7 + Math.random() * 0.2;
+    //  This just gives each backlogItem a slightly random bounce value
+    backlogItem.body.bounce.y = 0.7 + Math.random() * 0.2;
   }
 
   //  The score
@@ -100,25 +102,25 @@ function create() {
 
 function update() {
 
-  //  Collide the player and the stars with the platforms
+  //  Collide the player and the backlogItems with the platforms
   game.physics.arcade.collide(player, platforms);
-  game.physics.arcade.collide(stars, platforms);
+  game.physics.arcade.collide(backlogItems, platforms);
 
-  //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-  game.physics.arcade.overlap(player, stars, collectStar, null, this);
+  //  Checks to see if the player overlaps with any of the backlogItems, if he does call the collectBacklogItem function
+  game.physics.arcade.overlap(player, backlogItems, collectBacklogItem, null, this);
 
   //  Reset the players velocity (movement)
   player.body.velocity.x = 0;
 
   if (cursors.left.isDown) {
     //  Move to the left
-    player.body.velocity.x = -150;
+    player.body.velocity.x = -300;
 
     player.animations.play('left');
   }
   else if (cursors.right.isDown) {
     //  Move to the right
-    player.body.velocity.x = 150;
+    player.body.velocity.x = 300;
 
     player.animations.play('right');
   }
@@ -136,10 +138,10 @@ function update() {
 
 }
 
-function collectStar(player, star) {
+function collectBacklogItem(player, backlogItem) {
 
-  // Removes the star from the screen
-  star.kill();
+  // Removes the backlogItem from the screen
+  backlogItem.kill();
 
   //  Add and update the score
   score += 10;
