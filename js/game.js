@@ -16,9 +16,11 @@ function preload() {
   game.load.image('ground', 'assets/platform.png');
   game.load.image('backlogItem', 'assets/backlogitem.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+  game.load.spritesheet('po', 'assets/po.gif', 48, 48);
 }
 
 var player;
+var po;
 var platforms;
 var cursors;
 
@@ -72,6 +74,9 @@ function create() {
   //  Our two animations, walking left and right.
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
+
+  // The PO and its settings
+  po = game.add.sprite(1400, game.world.height - 150, 'po');
 
   //  Finally some backlogs to collect
   backlogItems = game.add.group();
@@ -143,7 +148,7 @@ function update() {
         vx -= speed;
       }
     } else if (vx < 0) {
-      if(vx >= speed){
+      if (vx >= speed) {
         vx = 0;
       } else {
         vx += speed;
@@ -171,8 +176,12 @@ function update() {
 
 function collectBacklogItem(player, backlogItem) {
 
-  // Removes the backlogItem from the screen
-  // backlogItem.kill();
+  if (player.children < 1) {
+    backlogItem.kill();
+    var item = game.add.sprite(0, -10, "backlogItem");
+    player.addChild(item);
+  }
+
 
   //  Add and update the score
   // score += 10;
