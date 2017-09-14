@@ -140,10 +140,10 @@ function update() {
 function collectBacklogItem(player, backlogItem) {
 
   // Removes the backlogItem from the screen
-  backlogItem.kill();
+  // backlogItem.kill();
 
   //  Add and update the score
-  score += 10;
-  scoreText.text = 'Score: ' + score;
+  // score += 10;
+  // scoreText.text = 'Score: ' + score;
 
 }
