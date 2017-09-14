@@ -118,23 +118,15 @@ function update() {
 
   if (cursors.left.isDown) {
     //  Move to the left
-<<<<<<< HEAD
     if (vx > -maxSpeed) vx -= speed;
     // player.body.velocity.x = -150;
-=======
-    player.body.velocity.x = -300;
->>>>>>> 4483e8b0faa71cdcb793d4fa3091c8e23538c29f
 
     player.animations.play('left');
   }
   else if (cursors.right.isDown) {
     //  Move to the right
-<<<<<<< HEAD
     if (vx < maxSpeed) vx += speed;
     // player.body.velocity.x = 150;
-=======
-    player.body.velocity.x = 300;
->>>>>>> 4483e8b0faa71cdcb793d4fa3091c8e23538c29f
 
     player.animations.play('right');
   }
