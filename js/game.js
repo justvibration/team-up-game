@@ -41,7 +41,7 @@ function create() {
   platforms.enableBody = true;
 
   // Here we create the ground.
-  var ground = platforms.create(0, game.world.height-32, 'ground');
+  var ground = platforms.create(0, game.world.height - 32, 'ground');
 
   //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
   ground.scale.setTo(4, 1);
@@ -99,6 +99,11 @@ function create() {
 
 }
 
+var speed = 10;
+var maxSpeed = 200;
+var vx = 0;
+var vy = 0;
+
 function update() {
 
   //  Collide the player and the backlogItems with the platforms
@@ -113,13 +118,15 @@ function update() {
 
   if (cursors.left.isDown) {
     //  Move to the left
-    player.body.velocity.x = -300;
+    if (vx > -maxSpeed) vx -= speed;
+    // player.body.velocity.x = -150;
 
     player.animations.play('left');
   }
   else if (cursors.right.isDown) {
     //  Move to the right
-    player.body.velocity.x = 300;
+    if (vx < maxSpeed) vx += speed;
+    // player.body.velocity.x = 150;
 
     player.animations.play('right');
   }
@@ -128,7 +135,32 @@ function update() {
     player.animations.stop();
 
     player.frame = 4;
+
+    if (vx > 0) {
+      if (vx <= speed) {
+        vx = 0;
+      } else {
+        vx -= speed;
+      }
+    } else if (vx < 0) {
+      if(vx >= speed){
+        vx = 0;
+      } else {
+        vx += speed;
+      }
+    }
+
+    if (vy > 0) {
+      vy -= speed;
+    } else {
+      vy += speed;
+    }
+
   }
+
+  // move player
+  player.body.velocity.x += vx;
+  player.body.velocity.y += vy;
 
   //  Allow the player to jump if they are touching the ground.
   if (cursors.up.isDown && player.body.touching.down) {
