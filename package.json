@@ -4,7 +4,7 @@
   "description": "@ Scania Hack",
   "main": "server.js",
   "scripts": {
-    "start": "http-server server.js",
+    "start": "http-server js/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
