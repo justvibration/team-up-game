@@ -1,0 +1,25 @@
+{
+  "name": "team-up-game",
+  "version": "1.0.0",
+  "description": "@ Scania Hack",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justvibration/team-up-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/justvibration/team-up-game/issues"
+  },
+  "homepage": "https://github.com/justvibration/team-up-game#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "phaser-ce": "^2.8.6",
+    "socket.io": "^2.0.3"
+  }
+}
