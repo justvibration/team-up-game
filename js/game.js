@@ -16,7 +16,7 @@ function preload() {
   game.load.image('ground', 'assets/platform.png');
   game.load.image('backlogItem', 'assets/backlogitem.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-  game.load.spritesheet('po', 'assets/po.gif', 48, 48);
+  game.load.spritesheet('po', 'assets/PO.png', 64, 64);
 }
 
 var player;
@@ -76,7 +76,8 @@ function create() {
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
   // The PO and its settings
-  po = game.add.sprite(1400, game.world.height - 150, 'po');
+  po = game.add.sprite(1430, game.world.height - 100, 'po');
+  game.physics.arcade.enable(po);
 
   //  Finally some backlogs to collect
   backlogItems = game.add.group();
@@ -120,6 +121,9 @@ function update() {
   //  Checks to see if the player overlaps with any of the backlogItems, if he does call the collectBacklogItem function
   game.physics.arcade.overlap(player, backlogItems, collectBacklogItem, null, this);
 
+  //  Checks to see if the player overlaps with the PO, if he does call the handOverToPO function
+  game.physics.arcade.overlap(player, po, handOverToPO, null, this);
+
   //  Reset the players velocity (movement)
   player.body.velocity.x = 0;
 
@@ -149,13 +153,9 @@ function update() {
       } else {
         vx -= speed;
       }
-<<<<<<< HEAD
-    } else if (vx < 0) {
-=======
     }
 
     if (vx < 0) {
->>>>>>> ebe875a269b48c2f76a7e8b3fa542c41df741970
       if (vx >= speed) {
         vx = 0;
       } else {
@@ -182,11 +182,22 @@ function collectBacklogItem(player, backlogItem) {
     backlogItem.kill();
     var item = game.add.sprite(0, -10, "backlogItem");
     player.addChild(item);
+    console.log(player);
   }
 
 
   //  Add and update the score
   // score += 10;
   // scoreText.text = 'Score: ' + score;
+
+}
+
+function handOverToPO(player, po) {
+
+  if (player.children.length > 0) {
+    player.removeChild(player.children[0]);
+    score += 10;
+    scoreText.text = 'Score: ' + score;
+  }
 
 }
