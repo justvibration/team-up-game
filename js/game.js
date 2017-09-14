@@ -99,8 +99,10 @@ function create() {
 
 }
 
+var speedY = 25;
 var speed = 10;
 var maxSpeed = 200;
+var maxJump = -350;
 var vx = 0;
 var vy = 0;
 
@@ -142,30 +144,26 @@ function update() {
       } else {
         vx -= speed;
       }
-    } else if (vx < 0) {
-      if(vx >= speed){
+    }
+
+    if (vx < 0) {
+      if (vx >= speed) {
         vx = 0;
       } else {
         vx += speed;
       }
     }
 
-    if (vy > 0) {
-      vy -= speed;
-    } else {
-      vy += speed;
-    }
-
   }
-
-  // move player
-  player.body.velocity.x += vx;
-  player.body.velocity.y += vy;
 
   //  Allow the player to jump if they are touching the ground.
   if (cursors.up.isDown && player.body.touching.down) {
     player.body.velocity.y = -350;
   }
+
+  // move player
+  player.body.velocity.x += vx;
+  player.body.velocity.y += vy;
 
 }
 
