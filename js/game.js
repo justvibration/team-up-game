@@ -16,11 +16,14 @@ function preload() {
   game.load.image('ground', 'assets/platform.png');
   game.load.image('backlogItem', 'assets/backlogitem.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+  game.load.spritesheet('computer', 'assets/computer.png', 64, 64);
   game.load.spritesheet('po', 'assets/PO.png', 64, 64);
+  game.load.spritesheet('bubble_fixit', 'assets/bubble_fixit.png', 72, 52);
+  game.load.spritesheet('bubble_gettowork', 'assets/bubble_gettowork.png', 72, 52);
 }
 
 var player;
-var po;
+var computer;
 var platforms;
 var cursors;
 
@@ -60,6 +63,14 @@ function create() {
   ledge.scale.setTo(1, 0.5);
   ledge.body.immovable = true;
 
+  // The po and its settings
+  po = game.add.sprite(1430, game.world.height - 95, 'po');
+  game.physics.arcade.enable(po);
+
+  // The computer and its settings
+  computer = game.add.sprite(10, game.world.height - 90, 'computer');
+  game.physics.arcade.enable(computer);
+
   // The player and its settings
   player = game.add.sprite(32, game.world.height - 150, 'dude');
 
@@ -75,10 +86,6 @@ function create() {
   player.animations.add('left', [0, 1, 2, 3], 10, true);
   player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-  // The PO and its settings
-  po = game.add.sprite(1430, game.world.height - 100, 'po');
-  game.physics.arcade.enable(po);
-
   //  Finally some backlogs to collect
   backlogItems = game.add.group();
 
@@ -88,7 +95,7 @@ function create() {
   //  Here we'll create 12 of them evenly spaced apart
   for (var i = 0; i < 3; i++) {
     //  Create a backlogItem inside of the 'backlogItems' group
-    var backlogItem = backlogItems.create(Math.floor((Math.random() * 1450) + 50), Math.floor((Math.random() * 700) + 0), 'backlogItem');
+    var backlogItem = backlogItems.create(Math.floor((Math.random() * 1300) + 100), Math.floor((Math.random() * 700) + 0), 'backlogItem');
 
     //  Let gravity do its thing
     backlogItem.body.gravity.y = 300;
@@ -121,8 +128,11 @@ function update() {
   //  Checks to see if the player overlaps with any of the backlogItems, if he does call the collectBacklogItem function
   game.physics.arcade.overlap(player, backlogItems, collectBacklogItem, null, this);
 
-  //  Checks to see if the player overlaps with the PO, if he does call the handOverToPO function
-  game.physics.arcade.overlap(player, po, handOverToPO, null, this);
+  //  Checks to see if the player overlaps with the computer, if he does call the codeOnComputer function
+  game.physics.arcade.overlap(player, computer, codeOnComputer, null, this);
+
+  //  Checks to see if the player overlaps with the computer, if he does call the codeOnComputer function
+  game.physics.arcade.overlap(player, po, interactWithPO, null, this);
 
   //  Reset the players velocity (movement)
   player.body.velocity.x = 0;
@@ -192,12 +202,41 @@ function collectBacklogItem(player, backlogItem) {
 
 }
 
-function handOverToPO(player, po) {
+function codeOnComputer(player, computer) {
 
   if (player.children.length > 0) {
     player.removeChild(player.children[0]);
     score += 10;
     scoreText.text = 'Score: ' + score;
+    spawnCR();
   }
 
+}
+
+function interactWithPO(player, po) {
+
+  if (player.children.length > 0 && po.children.length < 1) {
+    var bubble = game.add.sprite(-60, -30, "bubble_fixit");
+    po.addChild(bubble);
+    setTimeout(
+      function() {
+        po.removeChild(po.children[0])
+      }, 2000);
+  }
+
+  if(player.children.length < 1 && po.children.length < 1) {
+    var bubble = game.add.sprite(-60, -30, "bubble_gettowork");
+    po.addChild(bubble);
+    setTimeout(
+      function() {
+        po.removeChild(po.children[0])
+      }, 2000);
+  }
+
+}
+
+function spawnCR() {
+  var backlogItem = backlogItems.create(Math.floor((Math.random() * 1450) + 100), Math.floor((Math.random() * 700) + 0), 'backlogItem');
+  backlogItem.body.gravity.y = 300;
+  backlogItem.body.bounce.y = 0.1 + Math.random() * 0.01;
 }
