@@ -14,7 +14,7 @@ var game = new Phaser.Game(
 function preload() {
   game.load.image('bg', 'assets/bg.jpg');
   game.load.image('ground', 'assets/platform.png');
-  game.load.image('backlogItem', 'assets/star.png');
+  game.load.image('backlogItem', 'assets/backlogitem.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
 }
 
@@ -80,15 +80,15 @@ function create() {
   backlogItems.enableBody = true;
 
   //  Here we'll create 12 of them evenly spaced apart
-  for (var i = 0; i < 12; i++) {
+  for (var i = 0; i < 3; i++) {
     //  Create a backlogItem inside of the 'backlogItems' group
-    var backlogItem = backlogItems.create(i * 70, 0, 'backlogItem');
+    var backlogItem = backlogItems.create(Math.floor((Math.random() * 1450) + 50), Math.floor((Math.random() * 700) + 0), 'backlogItem');
 
     //  Let gravity do its thing
     backlogItem.body.gravity.y = 300;
 
     //  This just gives each backlogItem a slightly random bounce value
-    backlogItem.body.bounce.y = 0.7 + Math.random() * 0.2;
+    backlogItem.body.bounce.y = 0.1 + Math.random() * 0.01;
   }
 
   //  The score
